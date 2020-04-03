@@ -6,8 +6,18 @@ const Modal = ({ activeImg, closeModal }) => {
   return (
     <div className={styles.overlay} onClick={closeModal} role="presentation">
       <div className={styles.modal}>
-        <img src={activeImg} alt="pictures" />
+        {!activeImg ? (
+          <span className={styles.textNotFound}>
+            {' '}
+            Sorry, but large image not found
+          </span>
+        ) : (
+          <img src={activeImg} alt="pictures" />
+        )}
       </div>
+      <button className={styles.closeBtn} type="button" onClick={closeModal}>
+        close
+      </button>
     </div>
   );
 };

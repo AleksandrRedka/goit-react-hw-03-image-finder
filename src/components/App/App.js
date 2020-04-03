@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './App.module.css';
 import SearchForm from '../SearchForm/SearchForm';
 import Gallery from '../Gallery/Gallery';
@@ -54,15 +56,28 @@ export default class App extends Component {
       .finally(() => this.setState({ isLoading: false }));
   }
 
+  toastEror = text => {
+    toast.error(`${text}`, {
+      position: 'top-right',
+      autoClose: 3000,
+      closeOnClick: true,
+      draggable: true,
+    });
+  };
+
   handleSubmitForm = e => {
     e.preventDefault();
-    this.setState({ photo: [] });
-    this.fetchPhoto();
+    if (this.state.searchValue !== '') {
+      this.setState({ photo: [] });
+      this.fetchPhoto();
+    } else {
+      this.toastEror('Sorry, you form empty!');
+    }
   };
 
   handleChangeForm = e => {
     e.preventDefault();
-    return this.setState({ searchValue: e.target.value });
+    this.setState({ searchValue: e.target.value });
   };
 
   handleLoadMore = e => {
@@ -110,6 +125,7 @@ export default class App extends Component {
         {openModal && (
           <Modal activeImg={activeImgUrl} closeModal={this.handleCloseModal} />
         )}
+        <ToastContainer />
       </div>
     );
   }
